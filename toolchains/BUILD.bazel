@@ -1,0 +1,128 @@
+load("@rules_cc//cc/toolchains:toolchain.bzl", "cc_toolchain")
+load("@rules_cc//cc/toolchains:tool.bzl", "cc_tool")
+load("@rules_cc//cc/toolchains:tool_map.bzl", "cc_tool_map")
+load("@rules_cc//cc/toolchains:args.bzl", "cc_args")
+# load("@rules_cc//cc/toolchains:make_variable.bzl", "cc_make_variable")
+
+cc_args(
+    name = "rv64i_zicsr",
+    args = ["-march=rv64i", "-mabi=lp64"],
+    actions = [
+        "@rules_cc//cc/toolchains/actions:compile_actions",
+        "@rules_cc//cc/toolchains/actions:link_actions",
+    ],
+)
+
+# cc_make_variable(
+#     name = "example_variable",
+#     value = "-DEXAMPLE=1",
+#     variable_name = "EXAMPLE_SUBSTITUTION",
+# )
+
+cc_toolchain(
+    name = "kaleidoscope_toolchain_clang",
+    args = [":rv64i_zicsr"],
+    # args = select({
+    #     "@platforms//os:linux": [
+    #         "//toolchains/clang/args:linux_sysroot",
+    #     ],
+    #     "//conditions:default": [],
+    # }) + [
+    #     "//toolchains/args:no_absolute_paths_for_builtins",
+    #     "//toolchains/args:warnings",
+    #     "//toolchains/args:target",
+    # ],
+    enabled_features = ["@rules_cc//cc/toolchains/args:experimental_replace_legacy_action_config_features"],
+    known_features = ["@rules_cc//cc/toolchains/args:experimental_replace_legacy_action_config_features"],
+    # make_variables = [":example_variable"],
+    tool_map = ":all_tools",
+)
+
+toolchain(
+    name = "kaleidoscope_toolchain",
+    visibility = ["//visibility:public"],
+    toolchain = ":kaleidoscope_toolchain_clang",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+    target_compatible_with = ["@platforms//cpu:riscv64"],
+)
+
+COMMON_TOOLS = {
+    # "@rules_cc//cc/toolchains/actions:assembly_actions": ":none",
+    "@rules_cc//cc/toolchains/actions:c_compile": ":c_compile",
+    # "@rules_cc//cc/toolchains/actions:cpp_compile_actions": ":none",
+    # "@rules_cc//cc/toolchains/actions:link_actions": ":none",
+    # "@rules_cc//cc/toolchains/actions:objcopy_embed_data": ":none",
+    # "@rules_cc//cc/toolchains/actions:strip": ":none",
+}
+cc_tool_map(
+    name = "all_tools",
+    tools = COMMON_TOOLS,
+    visibility = ["//visibility:public"],
+)
+
+cc_tool(
+    name = "c_compile",
+    src = "//containers/riscv-llvm-toolchain:clang",
+)
+
+# ASSEMBLE_ACTIONS = [
+#       ACTION_NAMES.assemble,
+#       ACTION_NAMES.preprocess_assemble,
+#   ]
+
+# COMPILE_ACTIONS = [
+#     ACTION_NAMES.cpp_compile,
+#     ACTION_NAMES.c_compile
+# ]
+
+# ASSEMBLE_AND_COMPILE_ACTIONS = ASSEMBLE_ACTIONS + COMPILE_ACTIONS
+
+# arch_abi = feature(
+#     name = "arch_and_abi",
+#     enabled = True,
+#     flag_sets = [
+#         flag_set(
+#             actions = ASSEMBLE_AND_COMPILE_ACTIONS,
+#             flag_groups = [
+#                 flag_group(
+#                     flags = ["-march=rv64i", "-mabi=lp64"],
+#                 ),
+#             ],
+#         )
+#     ],
+# )
+
+
+
+
+
+# genrule(name = "bt", outs = ["rbt"], cmd = "echo '#!/bin/bash\n' > $@")
+
+# cc_tool(
+#     name = "clang",
+#     src = ":bt",
+# )
+
+# cc_tool(
+#     name = "clang++",
+#     src = "@monocle_build//:monocle",
+# )
+# cc_tool(
+#     name = "compiler",
+#     src = "//kaleidoscope/rules:kaleidoscope_compiler",
+# )
+
+# cc_tool(
+#     name = "compiler",
+#     src = "sample_compiler",
+# )
+
+# cc_tool(
+#     name = "linker",
+#     src = "sample_linker",
+# )
+
+# cc_tool(
+#     name = "wraptest",
+#     src = "docker run monocle echo \"$0 sample output\" > ${@: -1}",
+# )

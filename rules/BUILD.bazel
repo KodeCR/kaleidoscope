@@ -1,0 +1,29 @@
+# load(":monocle.bzl", "monocle_container")
+load(":kaleidoscope.bzl", "kaleidoscope_compiler")
+# load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
+# load("@bazel_skylib//rules:run_binary.bzl", "run_binary")
+
+# native_binary(name = "docker_tool", src = "/usr/local/bin/docker", visibility = ["//visibility:public"],)
+# run_binary(name = "docker_tool", tool = "docker", visibility = ["//visibility:public"],)
+# sh_binary(name = "docker_tool", srcs = ["container.sh"], visibility = ["//visibility:public"],)
+
+kaleidoscope_compiler(name = "kaleidoscope_compiler", visibility = ["//kaleidoscope:__subpackages__"],)
+
+
+# genrule(name = "docker", outs = ["docker_path"], executable = True, cmd = "which docker > $@", visibility = ["//visibility:public"],)
+# sh_binary(
+#     name = "container_sh",
+#     srcs = ["container.sh"],
+#     visibility = ["//visibility:public"],
+# )
+
+# package(default_visibility = ["//visibility:public"])
+
+# sh_binary(
+#     name = "docker_tool",
+#     srcs = ["docker.bash"],
+# )
+# sh_binary(
+#     name = "docker_tool",
+#     srcs = ["docker"],
+# )
