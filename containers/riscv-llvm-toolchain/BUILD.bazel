@@ -1,0 +1,20 @@
+load("//monocle/rules:monocle.bzl", "image", "container", "tool")
+package(default_visibility = ["//visibility:public"])
+
+image(
+	name = "riscv-llvm-toolchain",
+	dockerfile = "Dockerfile",
+    deps = ["//containers/monocle:monocle",],
+)
+
+container(
+	name = "riscv-toolchain",
+	image = ":riscv-llvm-toolchain",
+)
+
+tool(
+    name = "clang",
+    image = ":riscv-llvm-toolchain",
+    options = "-v /Users/kenneth/Developer/prism:/kaleidoscope",
+    binary = "/opt/kaleidoscope/bin/clang",
+)
