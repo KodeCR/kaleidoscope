@@ -1,0 +1,8 @@
+load("@monocle//rules:monocle.bzl", "image")
+package(default_visibility = ["//visibility:public"])
+
+image(
+	name = "kaleidoscope",
+	dockerfile = "kaleidoscope/Dockerfile",
+    deps = ["//monocle/containers:monocle",],
+)
