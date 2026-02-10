@@ -3,6 +3,7 @@ load("@rules_cc//cc/toolchains:tool.bzl", "cc_tool")
 load("@rules_cc//cc/toolchains:tool_map.bzl", "cc_tool_map")
 load("@rules_cc//cc/toolchains:args.bzl", "cc_args")
 # load("@rules_cc//cc/toolchains:make_variable.bzl", "cc_make_variable")
+package(default_visibility = ["//visibility:private"])
 
 cc_args(
     name = "rv64i_zicsr",
@@ -40,7 +41,7 @@ cc_toolchain(
 
 toolchain(
     name = "kaleidoscope_toolchain",
-    visibility = ["//visibility:public"],
+    # visibility = ["//visibility:public"],
     toolchain = ":kaleidoscope_toolchain_clang",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
     target_compatible_with = ["@platforms//cpu:riscv64"],
@@ -57,7 +58,7 @@ COMMON_TOOLS = {
 cc_tool_map(
     name = "all_tools",
     tools = COMMON_TOOLS,
-    visibility = ["//visibility:public"],
+    # visibility = ["//visibility:public"],
 )
 
 cc_tool(
