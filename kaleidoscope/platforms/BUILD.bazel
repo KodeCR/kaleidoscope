@@ -1,7 +1,9 @@
+package(default_visibility = ["//visibility:private"])
+
 constraint_value(
     name = "baremetal",
     constraint_setting = "@platforms//os",
-    visibility = ["//visibility:public"],
+    # visibility = ["//visibility:public"],
 )
 
 platform(
