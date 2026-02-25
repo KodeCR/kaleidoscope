@@ -24,3 +24,9 @@ tool(
     options = "-v .:/kaleidoscope",
     binary = "/opt/kaleidoscope/bin/clang",
 )
+
+image(
+	name = "riscv-qemu",
+	dockerfile = "riscv-qemu/Dockerfile",
+    deps = [":kaleidoscope",],
+)
