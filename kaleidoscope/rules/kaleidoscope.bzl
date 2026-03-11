@@ -1,3 +1,4 @@
+"""Kaleidoscope"""
 visibility("private")
 # load("@monocle//rules:monocle.bzl", "ImageInfo", "ContainerInfo")
 

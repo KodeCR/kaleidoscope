@@ -1,3 +1,4 @@
+"""Kaleidoscope"""
 # load(":monocle.bzl", "monocle_container")
 load(":kaleidoscope.bzl", "kaleidoscope_compiler")
 # load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
