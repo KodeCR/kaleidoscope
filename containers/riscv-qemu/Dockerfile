@@ -1,5 +1,5 @@
 ################################################################
-# Kaleidoscope - RISC-V LLVM Toolchain
+# Kaleidoscope - RISC-V QEMU
 ################################################################
 # Build
 FROM kaleidoscope AS build
