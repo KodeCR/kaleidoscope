@@ -1,49 +1,20 @@
-package(default_visibility = ["//visibility:private"])
-
-constraint_value(
-    name = "baremetal",
-    constraint_setting = "@platforms//os",
-    # visibility = ["//visibility:public"],
-)
-
+"""Kaleidoscope"""
 platform(
-    name = "riscv32_baremetal",
-    constraint_values = [
-        "@platforms//cpu:riscv32",
-        ":baremetal",
-    ],
-)
-
-platform(
-    name = "riscv64_baremetal",
+    name = "riscv64-kaleidoscope-none",
     constraint_values = [
         "@platforms//cpu:riscv64",
-        ":baremetal",
+        "@platforms//os:none",
     ],
+    visibility = ["//visibility:public"],
 )
 
 platform(
-    name = "riscv32_linux",
-    constraint_values = [
-        "@platforms//cpu:riscv32",
-        "@platforms//os:linux",
-    ],
-)
-
-platform(
-    name = "riscv64_linux",
+    name = "riscv64-kaleidoscope-linux",
     constraint_values = [
         "@platforms//cpu:riscv64",
-        "@platforms//os:linux",
+        "//platforms/os:linux",
     ],
-)
-
-config_setting(
-    name = "is_riscv32_linux",
-    constraint_values = [
-        "@platforms//cpu:riscv32",
-        "@platforms//os:linux",
-    ],
+    visibility = ["//visibility:public"],
 )
 
 config_setting(
