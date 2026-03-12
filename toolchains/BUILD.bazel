@@ -6,23 +6,58 @@ load("@rules_cc//cc/toolchains:args.bzl", "cc_args")
 # package(default_visibility = ["//visibility:private"])
 
 cc_args(
-    name = "kaleidoscope_sysroot",
+    name = "rv64i_zicsr",
+    args = ["-march=rv64i", "-mabi=lp64", "-mcmodel=medany"],
+    actions = [
+        "@rules_cc//cc/toolchains/actions:compile_actions",
+        "@rules_cc//cc/toolchains/actions:link_actions",
+    ],
+)
+
+cc_args(
+    name = "llvm",
+    args = ["-fuse-ld=lld"],
+    actions = [
+        "@rules_cc//cc/toolchains/actions:link_actions",
+    ],
+)
+
+cc_args(
+    name = "os_none_compile_c",
+    actions = [
+        "@rules_cc//cc/toolchains/actions:c_compile_actions",
+        "@rules_cc//cc/toolchains/actions:cpp_compile_actions",
+        "@rules_cc//cc/toolchains/actions:objc_compile",
+    ],
+    args = ["-ffreestanding"],
+    visibility = ["//visibility:public"],
+)
+
+cc_args(
+    name = "os_none_link",
+    actions = [
+        "@rules_cc//cc/toolchains/actions:link_actions",
+    ],
+    args = ["-nostdlib"],
+    visibility = ["//visibility:public"],
+)
+
+cc_args(
+    name = "debug",
+    actions = [
+        "@rules_cc//cc/toolchains/actions:link_actions",
+    ],
+    args = ["-g", "-O0", "-Wall",  "-Wextra"],
+    visibility = ["//visibility:public"],
+)
+
+cc_args(
+    name = "sysroot",
     actions = [
         "@rules_cc//cc/toolchains/actions:compile_actions",
     ],
     args = ["-no-canonical-prefixes","--sysroot=/opt/kaleidoscope"],
     visibility = ["//visibility:public"],
-)
-
-    # args = ["-ffreestanding", "-O0", "-g", "-Wall",  "-Wextra", "-fuse-ld=lld", "-nostdlib"],
-    # args = ["-no-canonical-prefixes"],
-cc_args(
-    name = "rv64i_zicsr",
-    args = ["-march=rv64i", "-mabi=lp64"],
-    actions = [
-        "@rules_cc//cc/toolchains/actions:compile_actions",
-        "@rules_cc//cc/toolchains/actions:link_actions",
-    ],
 )
 
 # cc_make_variable(
@@ -33,7 +68,7 @@ cc_args(
 
 cc_toolchain(
     name = "kaleidoscope_toolchain_clang",
-    args = [":kaleidoscope_sysroot"],
+    args = [":rv64i_zicsr",":llvm","os_none_compile_c","os_none_link"],
     # args = [":rv64i_zicsr"],
     # args = select({
     #     "@platforms//os:linux": [
